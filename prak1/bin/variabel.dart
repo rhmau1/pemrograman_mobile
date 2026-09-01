@@ -1,0 +1,33 @@
+late int a;
+void main(List<String> args) {
+  int a = 10;
+  double b = 3.14;
+  String c = "hai";
+  bool d = true;
+  print(a);
+  print(b);
+  print(c);
+  print(d);
+  String e = "4";
+  int f = a + int.parse(e);
+  print(f);
+  List<String> names = ['alice', 'bob', 'charlie'];
+  print(names);
+  print("nama ke 0 adalah ${names[0]}");
+  List<int> numbers = [1, 2, 3, 4];
+  print(numbers);
+  print("jumlah elemen dalam numbers adalah ${numbers.length}");
+  Map<String, int> person = {"alice": 20, "bob": 21};
+  print(person);
+  print("umur alice adalah ${person['alice']}");
+  dynamic g = "hello";
+  print(g);
+  g = 32;
+  print(g);
+  g = true;
+  print(g);
+  g = [1, 2, 3];
+  print(g);
+  g = {"nama": "rahma", "usia": 20};
+  print(g);
+}
