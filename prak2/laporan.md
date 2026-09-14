@@ -52,4 +52,6 @@ File utama (*entry point*) aplikasi Flutter **Spotilite**.
   * **Bagian Lirik**: Menggunakan `Column`, `Container`, dan `Align` untuk menampilkan teks lirik lagu (`lagu.lirik`).
   * **Bottom Navigation Bar**: Kontrol pemutar musik bagian bawah berwarna `Colors.pinkAccent` yang memuat tombol navigasi (`skip_previous`, `play_arrow`, dan `skip_next`).
 
-
+notes:
+scaffold tumpukan ke bawah, drawer yang disamping
+setiap properties yg ada di widget hanya bisa 1, biar banyak cari yang bisa menampung banyak / array cth. children
