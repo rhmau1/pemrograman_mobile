@@ -6,7 +6,9 @@ Kelas: TI 3C
 
 # Gambar Tampilan Aplikasi
 
-![](screenshot/image.png)
+![pause lagu](screenshot/pause-song.png)
+![pause lagu](screenshot/play-song.png)
+![pause lagu](screenshot/open-drawer.png)
 
 ## Penjelasan Kode Program & Pembaruan (Update)
 
