@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../models/mahasiswa.dart';
-import '../services/api_service.dart';
+import '../data/models/mahasiswa.dart';
+import '../data/providers.dart';
 
-class FormPage extends StatefulWidget {
+class FormPage extends ConsumerStatefulWidget {
   // null = mode tambah, terisi = mode edit
   final Mahasiswa? mahasiswa;
   const FormPage({super.key, this.mahasiswa});
 
   @override
-  State<FormPage> createState() => _FormPageState();
+  ConsumerState<FormPage> createState() => _FormPageState();
 }
 
-class _FormPageState extends State<FormPage> {
+class _FormPageState extends ConsumerState<FormPage> {
   final _formKey = GlobalKey<FormState>();
-  final api = ApiService();
   late final TextEditingController nimC, namaC, prodiC, emailC;
   bool _loading = false;
 
@@ -45,6 +45,7 @@ class _FormPageState extends State<FormPage> {
     setState(() => _loading = true);
 
     final data = Mahasiswa(
+      id: widget.mahasiswa?.id ?? 0,
       nim: nimC.text.trim(),
       nama: namaC.text.trim(),
       prodi: prodiC.text.trim(),
@@ -52,17 +53,20 @@ class _FormPageState extends State<FormPage> {
     );
 
     try {
+      final notifier = ref.read(mahasiswaListProvider.notifier);
       if (isEdit) {
-        await api.update(widget.mahasiswa!.id!, data);
+        await notifier.updateMahasiswa(widget.mahasiswa!.id, data);
       } else {
-        await api.create(data);
+        await notifier.createMahasiswa(data);
       }
       if (!mounted) return;
       // kirim "true" ke halaman list
       Navigator.pop(context, true);
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('$e')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('$e')),
+      );
     } finally {
       if (mounted) setState(() => _loading = false);
     }

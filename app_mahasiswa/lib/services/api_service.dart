@@ -2,11 +2,11 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-import '../models/mahasiswa.dart';
+import '../data/models/mahasiswa.dart';
 
 class ApiService {
   // Emulator Android: 10.0.2.2 = localhost komputer
-  static const String baseUrl = 'http://192.168.66.124:8000/api/mahasiswa';
+  static const String baseUrl = 'http://192.168.8.104:8000/api/mahasiswa';
 
   static const Map<String, String> headers = {
     'Content-Type': 'application/json',
