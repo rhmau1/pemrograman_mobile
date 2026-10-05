@@ -58,3 +58,42 @@
 3. Mengapa aplikasi tetap berfungsi dalam mode pesawat walaupun tidak ada kode khusus untuk mode offline?
 - Jawab: 
     Karena aplikasi tidak memiliki dependensi eksternal dan semua operasi dilakukan secara lokal di perangkat. Selain itu, aplikasi juga tidak menggunakan layanan berbasis cloud, sehingga tidak memerlukan koneksi internet untuk berfungsi.
+
+# Hasil praktikum 4
+![](screenshots/p4-setting-offline.jpeg)
+![](screenshots/p4-dirty-sebelum.jpeg)
+![](screenshots/p4-dirty-sesudah.jpeg)
+![](screenshots/p4-post-cached-offline.jpeg)
+
+# Pertanyaan Praktikum 4
+1. Apa perbedaan cache-first dan network-first? Berikan satu contoh data yang lebih cocok memakai network-first.
+- Jawab: 
+    Perbedaan utamanya terletak pada urutan prioritas pengambilan data. 
+    
+    Cache-first: Data diambil dari cache lokal terlebih dahulu. Jika cache kosong atau sudah kadaluarsa (expired), maka data akan diambil dari network. Data yang diambil dari network akan disimpan ke cache untuk digunakan pada permintaan berikutnya.
+
+    Network-first: Data diambil dari network terlebih dahulu. Jika network tidak tersedia (misalnya mode offline), maka data akan diambil dari cache lokal (jika ada). Data yang diambil dari network juga akan disimpan ke cache.
+
+    Contoh data yang lebih cocok memakai network-first adalah data yang harus selalu paling up-to-date atau real-time, seperti: 
+    - Harga saham atau cryptocurrency: Nilainya berubah sangat cepat, sehingga cache yang usang bisa menyesatkan. 
+    - Status pesanan (order status): Pembeli ingin segera tahu apakah pesanannya sudah diterima atau dikirim, bukan berdasarkan data lama.
+    - Skor pertandingan olahraga langsung: Data harus real-time agar akurat.
+    - Pembayaran atau transaksi bank: Kesalahan informasi sedikit saja dapat berakibat fatal.
+2. Jelaskan skenario kehilangan data yang dapat terjadi akibat markAllSynced(), lalu usulkan perbaikannya.
+- Jawab: 
+    Skenario kehilangan data yang bisa terjadi akibat markAllSynced() adalah:
+    1. Pengguna membuat 10 note baru -> status dirty = true.
+    2. Pengguna membuka screen SyncNotes -> memanggil sync() -> memanggil markAllSynced().
+    3. markAllSynced() mengubah dirty = false untuk semua 10 note.
+    4. Tiba-tiba listrik mati atau HP restart -> database ter-reset.
+    5. Saat dibuka lagi, semua 10 note muncul sebagai baru lagi (karena dirty kembali true).
+    6. Ini membuat data "palsu" karena aslinya sudah tersimpan di cloud.
+    
+    Usulan Perbaikan:
+    markAllSynced() tidak seharusnya mengubah status dirty menjadi false secara langsung. Sebaiknya markAllSynced() hanya menandai bahwa data "sedang di-sync" atau memindahkan data ke tabel arsip. Atau, jika ingin tetap mengubah dirty menjadi false, harus dipastikan bahwa data tersebut sudah benar-benar aman di cloud. Jika tidak yakin, lebih baik tidak mengubah status dirty atau menggunakan mekanisme backup.
+3. Mengapa diperlukan saklar forceOffline padahal sudah ada mode pesawat?
+- Jawab:
+     saklar forceOffline berguna untuk memanipulasi UI, memungkinkan developer menguji atau mendemonstrasikan bagaimana aplikasi berperilaku dalam kondisi offline tanpa benar-benar mengaktifkan mode pesawat.
+4. Mengapa fetchAndCache() menulis cache di dalam transaksi?
+- Jawab: 
+    Untuk memastikan operasi penghapusan dan penyisipan bersifat atomik. Dengan demikian, jika terjadi kegagalan di tengah operasi (misalnya saat menyisipkan data baru), database akan kembali ke keadaan semula (cache lama tetap utuh) sehingga tidak ada cache setengah jadi yang tersisa.    
