@@ -1,3 +1,8 @@
+# Hasil praktikum
+![gambar1](screenshots/p1-tema-terang.jpeg)
+![gambar2](screenshots/p1-tema-gelap-pertama.jpeg)
+![gambar3](screenshots/p1-tema-gelap-kedua.jpeg)
+
 # Pertanyaan Praktikum 1
 
 1. Mengapa SharedPreferences.getInstance() tidak boleh dipanggil di dalam method build() widget?
@@ -22,3 +27,19 @@
 
         Risiko:
         - Jika operasi penyimpanan gagal, UI akan menampilkan nilai yang salah sampai state dikembalikan ke nilai sebelumnya.   
+
+# Hasil praktikum 2
+
+# Pertanyaan Praktikum 2
+1. Mengapa kolom dirty bertipe INTEGER dan bukan BOOLEAN?
+    - Jawab: 
+    Karena Sqflite belum mendukung tipe BOOLEAN secara native. Oleh karena itu, digunakan INTEGER untuk menyimpan nilai boolean dengan representasi 0 (false) dan 1 (true).
+2. Apa fungsi parameter openDb pada constructor NoteRepository?
+    - Jawab: 
+    Parameter openDb berfungsi untuk memberikan fleksibilitas dalam membuat instance NoteRepository. Hal ini memungkinkan kita untuk menggunakan instance database yang sama di seluruh aplikasi tanpa perlu membuat instance baru setiap kali memanggil NoteRepository. Selain itu, parameter ini juga memudahkan dalam melakukan mocking database pada saat pengujian.
+3. Mengapa query memakai where: 'id = ?' dan whereArgs, bukan interpolasi string?
+    - Jawab: 
+    Menggunakan where: 'id = ?' dan whereArgs merupakan praktik keamanan untuk mencegah serangan SQL injection. Dengan menggunakan placeholder, nilai parameter akan di-escape secara otomatis oleh Sqflite, sehingga nilai parameter tidak akan dieksekusi sebagai bagian dari query SQL.
+4. Apa yang terjadi jika Anda menambah kolom baru di onCreate tanpa menaikkan version?
+    - Jawab: 
+    Jika Anda menambah kolom baru di onCreate tanpa menaikkan version, maka database akan di-create ulang dengan skema baru, namun data yang sudah ada sebelumnya akan hilang karena database di-reset. Oleh karena itu, setiap kali ada perubahan pada skema database, version harus dinaikkan untuk memastikan data yang sudah ada tetap terjaga. Jika kelak menambah kolom (misalnya pinned), naikkan `version` dan tambahkan onUpgrade. Tanpa ini, perangkat yang sudah memiliki database lama tidak akan mendapatkan kolom baru.
