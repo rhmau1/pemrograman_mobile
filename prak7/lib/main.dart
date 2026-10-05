@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'pages/settings_page.dart';
 import 'pages/notes_page.dart';
 import 'providers/prefs_providers.dart';
 

@@ -97,3 +97,17 @@
 4. Mengapa fetchAndCache() menulis cache di dalam transaksi?
 - Jawab: 
     Untuk memastikan operasi penghapusan dan penyisipan bersifat atomik. Dengan demikian, jika terjadi kegagalan di tengah operasi (misalnya saat menyisipkan data baru), database akan kembali ke keadaan semula (cache lama tetap utuh) sehingga tidak ada cache setengah jadi yang tersisa.    
+
+# Hasil praktikum 5
+![](screenshots/p5-testing.png)
+
+# Pertanyaan Praktikum 5
+1. Mengapa kita menguji provider dengan ProviderContainer + overrideWithValue dan bukan dengan membuka database asli?
+- Jawab: 
+    Cepat, deterministik, berjalan tanpa emulator/plugin, dan fokus menguji logika provider, bukan SQLite.
+2. Apa manfaat parameter latency pada syncNotes bagi pengujian?
+- Jawab: 
+    Parameter latency bermanfaat untuk mengontrol waktu tunggu (delay) sebelum operasi sync dimulai. Hal ini memungkinkan pengembang untuk menguji bagaimana aplikasi berperilaku dalam kondisi jaringan yang lambat atau sibuk. Selain itu, parameter latency juga memudahkan dalam mensimulasikan kondisi jaringan yang berbeda-beda untuk memastikan aplikasi tetap responsif dan tidak membeku selama operasi sync.    
+3. Tuliskan satu test tambahan yang menurut Anda penting namun belum ada, beserta alasannya.
+- Jawab:
+    Contoh: updateNote menandai dirty dan memperbarui updated_at; PostsNotifier mengembalikan cache saat offline; widget test empty state.
