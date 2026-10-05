@@ -28,8 +28,6 @@
         Risiko:
         - Jika operasi penyimpanan gagal, UI akan menampilkan nilai yang salah sampai state dikembalikan ke nilai sebelumnya.   
 
-# Hasil praktikum 2
-
 # Pertanyaan Praktikum 2
 1. Mengapa kolom dirty bertipe INTEGER dan bukan BOOLEAN?
     - Jawab: 
@@ -43,3 +41,20 @@
 4. Apa yang terjadi jika Anda menambah kolom baru di onCreate tanpa menaikkan version?
     - Jawab: 
     Jika Anda menambah kolom baru di onCreate tanpa menaikkan version, maka database akan di-create ulang dengan skema baru, namun data yang sudah ada sebelumnya akan hilang karena database di-reset. Oleh karena itu, setiap kali ada perubahan pada skema database, version harus dinaikkan untuk memastikan data yang sudah ada tetap terjaga. Jika kelak menambah kolom (misalnya pinned), naikkan `version` dan tambahkan onUpgrade. Tanpa ini, perangkat yang sudah memiliki database lama tidak akan mendapatkan kolom baru.
+
+# Hasil praktikum 3
+![](screenshots/p3-mode-pesawat.jpeg)
+![](screenshots/p3-validasi-empty-judul.jpeg)
+![](screenshots/p3-mode-pesawat-create-note.jpeg)
+![](screenshots/p3-mode-pesawat-update-note.jpeg)
+
+# Pertanyaan Praktikum 3
+1. Mengapa setelah setiap mutasi perlu meng-invalidate notesProvider dan dirtyCountProvider? Apa yang terjadi jika hanya salah satu?
+- Jawab: 
+    Untuk memastikan bahwa state di-refresh setelah setiap mutasi. Jika hanya salah satu yang di-invalidate, maka salah satu provider tidak akan diperbarui, sehingga dapat menyebabkan state yang tidak konsisten.
+2. Bagaimana cara Anda memicu state error secara sengaja untuk menguji tampilan _ErrorView?
+- Jawab: 
+    Misalnya override noteRepositoryProvider dengan repository yang melempar exception, mengubah nama tabel di query sementara, atau melempar exception manual di fetchNotes.
+3. Mengapa aplikasi tetap berfungsi dalam mode pesawat walaupun tidak ada kode khusus untuk mode offline?
+- Jawab: 
+    Karena aplikasi tidak memiliki dependensi eksternal dan semua operasi dilakukan secara lokal di perangkat. Selain itu, aplikasi juga tidak menggunakan layanan berbasis cloud, sehingga tidak memerlukan koneksi internet untuk berfungsi.
