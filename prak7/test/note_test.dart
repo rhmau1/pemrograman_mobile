@@ -20,6 +20,13 @@ class FakeNoteRepository extends NoteRepository {
   }
 
   @override
+  Future<Note?> getNoteById(int id) async {
+    if (throwError) throw Exception('db locked (simulasi)');
+    final matches = items.where((n) => n.id == id);
+    return matches.isEmpty ? null : matches.first;
+  }
+
+  @override
   Future<int> countDirty() async => items.where((n) => n.dirty).length;
 
   @override
@@ -68,6 +75,8 @@ void main() {
 
     test('notesProvider error', () async {
       final container = ProviderContainer(
+        // Tambahkan retry: (count, error) => null untuk Riverpod 3 agar tidak timeout
+        retry: (count, error) => null,
         overrides: [
           noteRepositoryProvider.overrideWithValue(
             FakeNoteRepository(throwError: true),
@@ -76,16 +85,26 @@ void main() {
       );
       addTearDown(container.dispose);
 
-      // listen() memaksa provider mulai build
-      container.listen(notesProvider, (_, _) {});
+      await expectLater(
+        container.read(notesProvider.future),
+        throwsA(isA<Exception>()),
+      );
+    });
 
-      // Tunggu cukup event-loop agar Riverpod transition ke AsyncError
-      await Future<void>.delayed(const Duration(milliseconds: 100));
+    test('noteByIdProvider membaca catatan dari repository sesuai ID', () async {
+      final note1 = _note('Note 1').copyWith(id: 1);
+      final note2 = _note('Note 2').copyWith(id: 2);
+      final container = ProviderContainer(
+        overrides: [
+          noteRepositoryProvider.overrideWithValue(
+            FakeNoteRepository(items: [note1, note2]),
+          ),
+        ],
+      );
+      addTearDown(container.dispose);
 
-      final state = container.read(notesProvider);
-      // Error masuk ke state (bukan crash) — bisa AsyncError atau AsyncLoading+error
-      expect(state.hasError, isTrue);
-      expect(state.error, isA<Exception>());
+      final fetched = await container.read(noteByIdProvider(2).future);
+      expect(fetched?.title, 'Note 2');
     });
   });
 
