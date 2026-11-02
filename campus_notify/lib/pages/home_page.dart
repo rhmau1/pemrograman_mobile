@@ -94,6 +94,313 @@ class _HomePageState extends ConsumerState<HomePage> {
       await ref.read(authStateProvider.notifier).logout();
     }
   }
+  Future<void> _showCreateNotificationDialog() async {
+    final formKey = GlobalKey<FormState>();
+    final titleController = TextEditingController();
+    final bodyController = TextEditingController();
+
+    await showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) => Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(ctx).viewInsets.bottom,
+        ),
+        child: Container(
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+          ),
+          padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
+          child: Form(
+            key: formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Header modal handle & title
+                  Center(
+                    child: Container(
+                      width: 40,
+                      height: 4,
+                      margin: const EdgeInsets.only(bottom: 16),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFE2E8F0),
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                        width: 38,
+                        height: 38,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFDCFCE7),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: const Icon(
+                          Icons.add_alert_rounded,
+                          color: Color(0xFF16A34A),
+                          size: 20,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Buat Notifikasi Uji',
+                              style: GoogleFonts.poppins(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: const Color(0xFF0F172A),
+                              ),
+                            ),
+                            Text(
+                              'Masukkan judul dan deskripsi notifikasi kustom',
+                              style: GoogleFonts.poppins(
+                                fontSize: 11,
+                                color: const Color(0xFF64748B),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.close_rounded, size: 20),
+                        color: const Color(0xFF94A3B8),
+                        onPressed: () => Navigator.pop(ctx),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+
+                  // Field 1: Title Notifikasi
+                  Text(
+                    'Judul Notifikasi',
+                    style: GoogleFonts.poppins(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: const Color(0xFF0F172A),
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  TextFormField(
+                    controller: titleController,
+                    autofocus: true,
+                    textInputAction: TextInputAction.next,
+                    style: GoogleFonts.poppins(
+                      fontSize: 13,
+                      color: const Color(0xFF0F172A),
+                    ),
+                    decoration: InputDecoration(
+                      hintText: 'Contoh: Kuliah Pengganti Mobile Dev',
+                      hintStyle: GoogleFonts.poppins(
+                        fontSize: 12,
+                        color: const Color(0xFF94A3B8),
+                      ),
+                      prefixIcon: const Icon(Icons.title_rounded,
+                          size: 18, color: Color(0xFF94A3B8)),
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 14, vertical: 12),
+                      filled: true,
+                      fillColor: const Color(0xFFF8FAFC),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide:
+                            const BorderSide(color: Color(0xFFE2E8F0)),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(
+                            color: Color(0xFF16A34A), width: 1.5),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide:
+                            const BorderSide(color: Color(0xFFEF4444)),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(
+                            color: Color(0xFFEF4444), width: 1.5),
+                      ),
+                    ),
+                    validator: (val) {
+                      if (val == null || val.trim().isEmpty) {
+                        return 'Judul notifikasi tidak boleh kosong';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 16),
+
+                  // Field 2: Deskripsi Notifikasi
+                  Text(
+                    'Deskripsi Notifikasi',
+                    style: GoogleFonts.poppins(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: const Color(0xFF0F172A),
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  TextFormField(
+                    controller: bodyController,
+                    maxLines: 3,
+                    textInputAction: TextInputAction.done,
+                    style: GoogleFonts.poppins(
+                      fontSize: 13,
+                      color: const Color(0xFF0F172A),
+                    ),
+                    decoration: InputDecoration(
+                      hintText: 'Tuliskan isi detail pengumuman notifikasi di sini...',
+                      hintStyle: GoogleFonts.poppins(
+                        fontSize: 12,
+                        color: const Color(0xFF94A3B8),
+                      ),
+                      alignLabelWithHint: true,
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 14, vertical: 12),
+                      filled: true,
+                      fillColor: const Color(0xFFF8FAFC),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide:
+                            const BorderSide(color: Color(0xFFE2E8F0)),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(
+                            color: Color(0xFF16A34A), width: 1.5),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide:
+                            const BorderSide(color: Color(0xFFEF4444)),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(
+                            color: Color(0xFFEF4444), width: 1.5),
+                      ),
+                    ),
+                    validator: (val) {
+                      if (val == null || val.trim().isEmpty) {
+                        return 'Deskripsi notifikasi tidak boleh kosong';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 24),
+
+                  // Action Buttons: Batal & Kirim
+                  Row(
+                    children: [
+                      Expanded(
+                        child: SizedBox(
+                          height: 44,
+                          child: OutlinedButton(
+                            onPressed: () => Navigator.pop(ctx),
+                            style: OutlinedButton.styleFrom(
+                              side: const BorderSide(color: Color(0xFFE2E8F0)),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            child: Text(
+                              'Batal',
+                              style: GoogleFonts.poppins(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w500,
+                                color: const Color(0xFF64748B),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: SizedBox(
+                          height: 44,
+                          child: ElevatedButton.icon(
+                            onPressed: () {
+                              if (!formKey.currentState!.validate()) return;
+                              final title = titleController.text.trim();
+                              final body = bodyController.text.trim();
+                              Navigator.pop(ctx);
+
+                              final now = DateTime.now();
+                              final id = 'sim-${now.millisecondsSinceEpoch}';
+                              final notif = CampusNotification(
+                                id: id,
+                                number: 0,
+                                title: title,
+                                body: body,
+                                timestamp: now,
+                                announcementId: id,
+                              );
+                              ref
+                                  .read(notificationListProvider.notifier)
+                                  .addNotification(notif);
+                              PushService.instance.showNotification(
+                                id: id,
+                                title: title,
+                                body: body,
+                                payload: id,
+                              );
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  backgroundColor: const Color(0xFF0F172A),
+                                  behavior: SnackBarBehavior.floating,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  content: Text(
+                                    'Notifikasi berhasil dibuat dan dikirim!',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 12,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  duration: const Duration(seconds: 2),
+                                ),
+                              );
+                            },
+                            icon: const Icon(Icons.send_rounded, size: 16),
+                            label: Text(
+                              'Kirim Notif',
+                              style: GoogleFonts.poppins(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF16A34A),
+                              foregroundColor: Colors.white,
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
   Color _getSquircleColor(int number) {
     final colors = [
@@ -131,26 +438,10 @@ class _HomePageState extends ConsumerState<HomePage> {
                 child: SizedBox(
                   height: 40,
                   child: ElevatedButton.icon(
-                    onPressed: () {
-                      PushService.instance.simulateNotification();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          backgroundColor: const Color(0xFF0F172A),
-                          behavior: SnackBarBehavior.floating,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8)),
-                          content: Text(
-                            'Notifikasi masuk dengan suara!',
-                            style: GoogleFonts.poppins(
-                                fontSize: 12, color: Colors.white),
-                          ),
-                          duration: const Duration(seconds: 2),
-                        ),
-                      );
-                    },
+                    onPressed: _showCreateNotificationDialog,
                     icon: const Icon(Icons.add_alert_rounded, size: 16),
                     label: Text(
-                      'Kirim Notif Uji',
+                      'Buat Notif Uji',
                       style: GoogleFonts.poppins(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
