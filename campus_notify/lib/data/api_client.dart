@@ -12,7 +12,7 @@ Dio buildApiClient(
   void Function()? onSessionExpired,
 }) {
   final dio = Dio(BaseOptions(
-    baseUrl: 'https://example-campus-api.test',
+    baseUrl: 'https://reqres.in/api',
     connectTimeout: const Duration(seconds: 10),
     receiveTimeout: const Duration(seconds: 10),
   ));
