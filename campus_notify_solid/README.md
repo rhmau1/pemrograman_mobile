@@ -22,7 +22,6 @@
 6. [Galeri Screenshot Aplikasi di Handphone](#-galeri-screenshot-aplikasi-di-handphone)
    - [Tampilan Antarmuka Mobile](#tampilan-antarmuka-mobile)
    - [Daftar & Penjelasan Screenshot](#daftar--penjelasan-screenshot)
-   - [Panduan Memasukkan Tangkapan Layar](#panduan-memasukkan-tangkapan-layar)
 7. [Panduan Instalasi & Menjalankan Aplikasi](#-panduan-instalasi--menjalankan-aplikasi)
 8. [Akun Pengujian (Testing Credentials)](#-akun-pengujian-testing-credentials)
 
